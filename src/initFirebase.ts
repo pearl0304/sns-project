@@ -1,6 +1,8 @@
 import {initializeApp} from "firebase/app";
 import {getAuth} from "firebase/auth";
 import {getFirestore} from "firebase/firestore";
+import {getStorage} from "firebase/storage";
+import moment from "moment";
 
 
 const firebaseConfig = {
@@ -16,3 +18,4 @@ const firebaseApp = initializeApp(firebaseConfig);
 
 export const firebaseAuth = getAuth(firebaseApp);
 export const fireStoreJob = getFirestore(firebaseApp);
+export const fireStorage = getStorage(firebaseApp);
