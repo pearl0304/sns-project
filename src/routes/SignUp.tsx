@@ -12,6 +12,7 @@ import {collection, addDoc} from "firebase/firestore";
 // Css
 import {UserWrapper} from "../css/User.styled";
 import {Button, Input} from "@mui/material";
+import {Link} from "react-router-dom";
 
 export const SignUp = () => {
     const firestore_path = 'users';
@@ -49,18 +50,29 @@ export const SignUp = () => {
 
 
     return <UserWrapper>
-        <div className={'user_input'}>
-            <form onSubmit={onSubmit}>
-                <Input onChange={onChange} name={'email'} value={email} type={'email'}
-                       placeholder={'Please enter email'} required={true}/>
-                <Input onChange={onChange} name={'password'} value={password} type={'password'}
-                       placeholder={'Please enter password'}
-                       required={true}/>
-                <Input onChange={onChange} name={'displayName'} value={displayName} type={'text'}
-                       placeholder={'Please enter display'}
-                       required={true}/>
-                <Button type={'submit'} variant="contained">Sign Up</Button>
-            </form>
+        <div className={'doc-title'}>
+            <span><strong>SIMPLE</strong></span>
         </div>
+        <article id={'mainContent'} className={'content-article'}>
+            <div className={'con-login'}>
+                <div className={'login-form'}>
+                    <form onSubmit={onSubmit}>
+                        <Input onChange={onChange} name={'email'} value={email} type={'email'}
+                               placeholder={'Please enter email'} required={true}/>
+                        <Input onChange={onChange} name={'password'} value={password} type={'password'}
+                               placeholder={'Please enter password'}
+                               required={true}/>
+                        <Input onChange={onChange} name={'displayName'} value={displayName} type={'text'}
+                               placeholder={'Please enter display'}
+                               required={true}/>
+                        <Button type={'submit'} variant="contained">Sign Up</Button>
+                    </form>
+                    <div className={'cont-link'}>
+                        <Link to={'/'} style={{textDecoration: 'none', color: 'inherit'}}>Log In</Link>
+                    </div>
+                </div>
+            </div>
+        </article>
+
     </UserWrapper>
 }

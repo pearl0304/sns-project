@@ -15,7 +15,7 @@ export const Navigation = () => {
     <NavigationWrapper>
       <ul className={'tab-bar'}>
         <li>
-          <Link style={{ textDecoration: 'none', color: 'inherit' }} to={'/'}>
+          <Link style={{ textDecoration: 'none', color: 'inherit' }} to={'/feed'}>
             <img src={home} />
           </Link>
         </li>

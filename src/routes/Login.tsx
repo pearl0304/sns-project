@@ -30,7 +30,7 @@ export const Login = () => {
                 // Signed in
                 const user = userCredential.user;
                 console.log('user', user);
-                // ...
+                document.location.href = '/feed'
             })
             .catch((error) => {
                 const errorCode = error.code;
@@ -42,17 +42,25 @@ export const Login = () => {
     const {email, password} = inputs;
 
     return <UserWrapper>
-        <div className={'user_input'}>
-            <form onSubmit={onSubmit}>
-                <Input onChange={onChange} name={'email'} value={email} placeholder={'Enter your email'}
-                       type={'email'}/>
-                <Input onChange={onChange} name={'password'} value={password} placeholder={'Enter your password'}
-                       type={'password'}/>
-                <Button type={'submit'} variant="contained">Log In</Button>
-            </form>
-            <div>
-                <Link to={'/signup'} style={{textDecoration: 'none', color: 'inherit'}}>Not a member yet?</Link>
-            </div>
+        <div className={'doc-title'}>
+            <span><strong>SIMPLE</strong></span>
         </div>
+        <article id={'mainContent'} className={'content-article'}>
+            <div className={'con-login'}>
+                <div className={'login-form'}>
+                    <form onSubmit={onSubmit}>
+                        <Input onChange={onChange} name={'email'} value={email} placeholder={'Enter your email'}
+                               type={'email'}/>
+                        <Input onChange={onChange} name={'password'} value={password}
+                               placeholder={'Enter your password'}
+                               type={'password'}/>
+                        <Button type={'submit'} variant="contained">Log In</Button>
+                    </form>
+                    <div className={'cont-link'}>
+                        <Link to={'/signup'} style={{textDecoration: 'none', color: 'inherit'}}>Not a member yet?</Link>
+                    </div>
+                </div>
+            </div>
+        </article>
     </UserWrapper>
 }
