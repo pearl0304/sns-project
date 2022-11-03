@@ -15,49 +15,38 @@ import {PostInputInterface} from "../interfaces/post.interface";
 import {createDeflateRaw} from "zlib";
 
 export const Write = ({userInfo}: any) => {
-    const db_path = 'images'
+    const db_path = 'feed'
     const [content, setContent] = useState<string>("");
-    const [posts, setPosts] = useState<PostInputInterface[]>([]);
     const [attachment, setAttachment] = useState<string[]>([]);
-
-    useEffect(() => {
-        const q = query(collection(fireStoreJob, db_path), orderBy("date_created", "desc"));
-        const unsubscribe = onSnapshot(q, (querySnapshot) => {
-            const arr = querySnapshot.docs.map((doc) => {
-                return {
-                    id: doc.id,
-                    ...doc.data()
-                };
-            });
-            // @ts-ignore
-            setPosts(arr)
-        });
-
-        return () => {
-            unsubscribe()
-        }
-    }, []);
-
 
     const onSubmit = async (e: ChangeEvent<HTMLFormElement>) => {
         e.preventDefault();
-        let attachmentURL :any[] = [];
+        let attachmentURL: any;
+        const imageURL: any[] = [];
+        const time = Date.now();
         try {
 
-            if(attachment.length > 0) {
-                attachment.forEach((data) => {
-                    let storageRef = ref(fireStorage, `${userInfo.uid}-${moment().utc().format()}`);
-                    const res =  uploadString(storageRef, data, 'data_url');
-                    console.log(res)
+            if (attachment.length > 0) {
+                attachment.forEach((data, index) => {
+                    let storageRef = ref(fireStorage, `images/${userInfo.uid}-${time}-${index}`);
+                    const res = uploadString(storageRef, data, 'data_url')
+                    Promise.all([res]).then((value) => {
+                        attachmentURL = getDownloadURL(value[0].ref).then(() => {
+                            imageURL.push(attachmentURL)
+                        })
+
+                    })
                 })
             }
 
             const data = {
                 uid: userInfo.uid,
                 text: content,
-                imageURL: attachmentURL,
+                imageURL: imageURL,
                 date_created: moment().utc().format()
             }
+
+            console.log(data, data)
 
             const docRef = await addDoc(collection(fireStoreJob, db_path), data)
             console.log("Document written with ID: ", docRef.id);
