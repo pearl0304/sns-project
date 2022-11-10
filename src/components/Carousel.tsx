@@ -4,19 +4,22 @@ import 'slick-carousel/slick/slick-theme.css';
 import { Key } from 'react';
 
 export const Carousel = ({ images }: any) => {
+  //console.log(images);
   const settings = {
     docs: true,
+    slidesToShow: 1,
+    slidesToScroll: 1,
   };
 
   return (
     <div>
-      {images.map((data: string | undefined, index: Key | null | undefined) => (
-        <Slider>
-          <div key={index}>
-            <img src={data} width={'500px'} height={'350px'} />
-          </div>
-        </Slider>
-      ))}
+      {/*<Slider {...settings}>*/}
+      {/*  {images.map((data: string | undefined, index: Key | null | undefined) => (*/}
+      {/*    <div>*/}
+      {/*      <img src={data} width={'400px'} height={'250px'} />*/}
+      {/*    </div>*/}
+      {/*  ))}*/}
+      {/*</Slider>*/}
     </div>
   );
 };

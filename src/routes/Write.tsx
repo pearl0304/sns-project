@@ -10,11 +10,13 @@ import { ref, uploadString, getDownloadURL } from 'firebase/storage';
 import { WriterWrapper } from '../css/Write.styled';
 import { Button, Input } from '@mui/material';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import { Carousel } from '../components/Carousel';
 
 export const Write = ({ userInfo }: any) => {
   const db_path = 'feed';
   const [content, setContent] = useState<string>('');
-  const [attachment, setAttachment] = useState<string[]>([]);
+  const [attachment, setAttachment] = useState<any[]>([]);
+  const [btnEnable, setBtnEnable] = useState<boolean>(true);
   const [imgIndex, setImgIndex] = useState<number>(0);
 
   const onSubmit = async (e: ChangeEvent<HTMLFormElement>) => {
@@ -60,16 +62,18 @@ export const Write = ({ userInfo }: any) => {
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { value } = e.currentTarget;
     setContent(value);
+    value ? setBtnEnable(false) : setBtnEnable(true);
   };
   const onFileChange = async (e: ChangeEvent<HTMLInputElement>) => {
     try {
       const files_arr = e.target.files;
+      let images: any[] = [];
       let imageURL: any[] = [];
       if (files_arr) {
         let file;
         for (let i = 0; i < files_arr.length; i++) {
           file = files_arr[i];
-
+          console.log(file);
           let reader = new FileReader();
           reader.onload = () => {
             imageURL[i] = reader.result;
@@ -90,43 +94,55 @@ export const Write = ({ userInfo }: any) => {
 
   return (
     <WriterWrapper>
-      <div className={'upload-form'}>
-        <form onSubmit={onSubmit}>
-          <label htmlFor={'img-upload'}>
-            <div>
-              <CloudUploadIcon />
-            </div>
-          </label>
-          <input
-            onChange={onFileChange}
-            type={'file'}
-            id={'img-upload'}
-            accept={'image/*'}
-            multiple
-            style={{ display: 'none' }}
-          />
-          <div className={'preview'}>
-            {attachment ? (
-              attachment.map((data, index) => (
-                <div key={index}>
-                  <img src={data} width={'400px'} height={'250px'} />
-                  <button onClick={() => onDeleteFile(index)}>X</button>
+      <div className={'upload-box'}>
+        <div className={'preview'}>
+          {attachment ? (
+            <Carousel images={attachment} />
+          ) : (
+            // attachment.map((data, index) => (
+            //   <div key={index}>
+            //     <img src={data} width={'400px'} height={'250px'} />
+            //     <button onClick={() => onDeleteFile(index)}>X</button>
+            //   </div>
+            // ))
+            <div></div>
+          )}
+        </div>
+        <div className={'upload-form'}>
+          <form onSubmit={onSubmit} className={'align-center'}>
+            <div className={'box label-img'}>
+              <label htmlFor={'img-upload'}>
+                <div>
+                  <CloudUploadIcon fontSize="large" />
                 </div>
-              ))
-            ) : (
-              <div></div>
-            )}
-          </div>
-          <Input
-            placeholder={"What's your mind?"}
-            onChange={onChange}
-            value={content}
-            type={'text'}
-          />
-          <Button type={'submit'} variant="contained">
-            Upload
-          </Button>
-        </form>
+              </label>
+              <input
+                onChange={onFileChange}
+                type={'file'}
+                id={'img-upload'}
+                accept={'image/*'}
+                multiple
+                style={{ display: 'none' }}
+              />
+            </div>
+            <div className={'box input-text'}>
+              <Input
+                inputProps={{ maxLength: 140 }}
+                fullWidth={true}
+                multiline={true}
+                placeholder={"What's on your mind?"}
+                onChange={onChange}
+                value={content}
+                type={'text'}
+              />
+            </div>
+            <div className={'box'}>
+              <Button disabled={btnEnable} fullWidth={true} type={'submit'} variant="contained">
+                Upload
+              </Button>
+            </div>
+          </form>
+        </div>
       </div>
     </WriterWrapper>
   );

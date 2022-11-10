@@ -1,23 +1,32 @@
 import styled from 'styled-components';
 
 export const WriterWrapper = styled.div`
-  margin-top: 50%;
-  transform: translateY(-50%);
+  position: fixed;
+  top: 50px;
+  width: 100%;
+  height: 90%;
   display: flex;
   justify-content: center;
+  align-items: center;
+
+  .upload-form {
+    width: 400px;
+    text-align: center;
+  }
 
   .upload-form form {
     display: flex;
     flex-direction: column;
   }
 
-  .upload-form form label {
-    text-align: center;
-    margin-bottom: 20px;
-    cursor: pointer;
+  .box {
+    padding: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
-  .upload-form form button {
-    margin-top: 40px;
+  .label-img label:hover {
+    cursor: pointer;
   }
 `;
