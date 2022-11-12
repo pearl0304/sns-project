@@ -29,4 +29,16 @@ export const WriterWrapper = styled.div`
   .label-img label:hover {
     cursor: pointer;
   }
+
+  .slider-box {
+    position: relative;
+    display: flex;
+    width: 100%;
+    height: 100%;
+  }
+
+  .slider-box .cancel-btn {
+    width: 30px;
+    height: 30px;
+  }
 `;

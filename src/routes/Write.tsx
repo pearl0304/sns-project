@@ -1,5 +1,8 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
 import moment from 'moment';
+import uuid from 'react-uuid';
+
+//npm i react-uuid
 
 // FIREBASE
 import { fireStoreJob, fireStorage } from '../initFirebase';
@@ -73,10 +76,10 @@ export const Write = ({ userInfo }: any) => {
         let file;
         for (let i = 0; i < files_arr.length; i++) {
           file = files_arr[i];
-          console.log(file);
           let reader = new FileReader();
+          let id = uuid();
           reader.onload = () => {
-            imageURL[i] = reader.result;
+            imageURL[i] = { id: id, url: reader.result };
             setAttachment([...imageURL]);
           };
           reader.readAsDataURL(file);
@@ -96,15 +99,11 @@ export const Write = ({ userInfo }: any) => {
     <WriterWrapper>
       <div className={'upload-box'}>
         <div className={'preview'}>
-          {attachment ? (
-            <Carousel images={attachment} />
+          {attachment.length > 0 ? (
+            <div className={'slider-box'}>
+              <Carousel images={attachment} />
+            </div>
           ) : (
-            // attachment.map((data, index) => (
-            //   <div key={index}>
-            //     <img src={data} width={'400px'} height={'250px'} />
-            //     <button onClick={() => onDeleteFile(index)}>X</button>
-            //   </div>
-            // ))
             <div></div>
           )}
         </div>
