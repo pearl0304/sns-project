@@ -20,7 +20,6 @@ export const Write = ({ userInfo }: any) => {
   const [content, setContent] = useState<string>('');
   const [attachment, setAttachment] = useState<any[]>([]);
   const [btnEnable, setBtnEnable] = useState<boolean>(true);
-  const [imgIndex, setImgIndex] = useState<number>(0);
 
   const onSubmit = async (e: ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -45,7 +44,7 @@ export const Write = ({ userInfo }: any) => {
       if (attachment.length > 0) {
         attachment.forEach((data, index) => {
           let storageRef = ref(fireStorage, `images/${userInfo.uid}-${time}-${index}`);
-          uploadString(storageRef, data, 'data_url').then(async (value) => {
+          uploadString(storageRef, data.url, 'data_url').then(async (value) => {
             const downloadURL = await getDownloadURL(value.ref);
             imageURL.push(downloadURL);
             await updateDoc(doc(fireStoreJob, db_path, docRef.id), {
@@ -56,6 +55,7 @@ export const Write = ({ userInfo }: any) => {
       }
 
       setContent('');
+      setBtnEnable(true);
       setAttachment([]);
     } catch (e) {
       console.error('Error adding document', e);
@@ -70,7 +70,6 @@ export const Write = ({ userInfo }: any) => {
   const onFileChange = async (e: ChangeEvent<HTMLInputElement>) => {
     try {
       const files_arr = e.target.files;
-      let images: any[] = [];
       let imageURL: any[] = [];
       if (files_arr) {
         let file;
@@ -90,9 +89,8 @@ export const Write = ({ userInfo }: any) => {
     }
   };
 
-  const onDeleteFile = (index: number) => {
-    const remove = attachment.splice(index, 1);
-    setAttachment(remove);
+  const onDeleteImage = (id: string) => {
+    setAttachment(attachment.filter((img) => img.id !== id));
   };
 
   return (
@@ -101,7 +99,7 @@ export const Write = ({ userInfo }: any) => {
         <div className={'preview'}>
           {attachment.length > 0 ? (
             <div className={'slider-box'}>
-              <Carousel images={attachment} />
+              <Carousel images={attachment} onDeleteImage={onDeleteImage} />
             </div>
           ) : (
             <div></div>

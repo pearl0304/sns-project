@@ -5,9 +5,7 @@ import { CarouselWrapper } from '../css/Carousel.styled';
 import { Button } from '@mui/material';
 import { useState } from 'react';
 
-export const Carousel = ({ images }: any) => {
-  const [picks, setPicks] = useState(images);
-
+export const Carousel = ({ images, onDeleteImage }: any) => {
   const settings = {
     arrows: false,
     docs: true,
@@ -19,11 +17,17 @@ export const Carousel = ({ images }: any) => {
   return (
     <CarouselWrapper>
       <Slider {...settings}>
-        {images.map((data: any, index: number) => (
+        {images.map((data: any) => (
           <div key={data.id}>
             <img src={data.url} width={'400px'} height={'250px'} />
             <div style={{ position: 'absolute', top: '0px', backgroundColor: '#eee' }}>
-              <Button>X</Button>
+              <Button
+                onClick={() => {
+                  onDeleteImage(data.id);
+                }}
+              >
+                X
+              </Button>
             </div>
           </div>
         ))}
