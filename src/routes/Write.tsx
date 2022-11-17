@@ -90,7 +90,8 @@ export const Write = ({ userInfo }: any) => {
   };
 
   const onDeleteImage = (id: string) => {
-    setAttachment(attachment.filter((img) => img.id !== id));
+    const newAttachment = attachment.filter((img) => img.id !== id);
+    setAttachment(newAttachment);
   };
 
   return (
